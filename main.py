@@ -1,4 +1,5 @@
-from flask import Flask, request
+import required as required
+from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,17 +12,23 @@ db = SQLAlchemy(app)
 
 class VideoModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable= False)
-    views = db.Column(db.Integer, nullable= False)
-    likes = db.Column(db.Integer, nullable= False)
+    name = db.Column(db.String(100), nullable=False)
+    views = db.Column(db.Integer, nullable=False)
+    likes = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"Video(name = {name}, views= {views}, likes = {likes}"
+        # return "name and stuff"
+        return f"Video(name ={name}, views={views}, likes ={likes}"
         
-video_put_args = reqparse. RequestParser()
-video_put_args.add_argument("name", type=str, help="Name of the video", required = True)
-video_put_args.add_argument("views", type=int, help="View of the video", required = True)
-video_put_args.add_argument("likes", type=int, help="Likes on the video", required = True)
+video_put_args = reqparse.RequestParser()
+video_put_args.add_argument("name", type=str, help="Name of the video is required", required=True)
+video_put_args.add_argument("views", type=int, help="Views of the video", required=True)
+video_put_args.add_argument("likes", type=int, help="Likes on the video", required=True)
+
+video_update_args = reqparse.RequestParser()
+video_update_args.add_argument("name", type=str, help="Name of the video is required")
+video_update_args.add_argument("views", type=int, help="Views of the video")
+video_update_args.add_argument("likes", type=int, help="Likes on the video")
 
 
 class Video(Resource):
